@@ -1,0 +1,39 @@
+div.evo_cpt_list {
+    padding-bottom: 10px;
+
+}
+div.evo_cpt_list  div.current_cpts {
+  padding: 5px 0;
+  margin: 0px 0;
+
+}
+div.evo_cpt_list  div.current_cpts div.evo_remove {
+  float:right;
+  cursor: pointer;
+  background-image: url(/wp-includes/images/xit-2x.gif);
+  background-position: 0 0;
+  height: 20px;
+  width: 20px;
+}
+div.evo_cpt_list  div.current_cpts div.evo_remove:hover {
+  background-position: -20px 0;
+}
+div.evo_cpt_list .my_placeholder {
+  height: 30px;
+  border: dashed 1px gray;
+}
+div.evo_select_callout {
+
+}
+div.evo_select_callout div.evo_add_cpt {
+  float:right;
+  cursor: pointer;
+  background-image: url(/wp-includes/images/admin-bar-sprite.png);
+  background-position: 1px -176px;
+  height: 20px;
+  width: 20px;
+}
+
+div.evo_select_callout div.evo_add_cpt:hover {
+  background-position: 1px -196px;
+}
