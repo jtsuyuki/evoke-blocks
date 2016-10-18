@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name:        Evoke Blocks
-Plugin URI:         https://roots.io/plugins/soil/
+Plugin URI:         https://github.com/jtsuyuki/evoke-blocks
 Description:        A plugin to simplify creating custom post types (CPTs) and metaboxes to assign the CPTs to pages.
 Version:            1
 Author:             Evoke health
