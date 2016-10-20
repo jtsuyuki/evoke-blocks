@@ -10,7 +10,7 @@ Author URI:         http://www.evokehealth.com
 License:            MIT License
 License URI:        http://opensource.org/licenses/MIT
 */
-use Evo\UI\Core as EvoCore;
+use Evo\Block\Core as EvoCore;
 
 $evo_custom_type_names = ['callout', 'block'];
 

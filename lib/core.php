@@ -1,5 +1,5 @@
 <?php
-namespace Evo\UI;
+namespace Evo\Block;
 use WP_Query;
 
 abstract class Core  {
@@ -42,30 +42,30 @@ abstract class Core  {
     wp_enqueue_script('evo_js', false, ['jquery-ui-sortable']);
   }
 
-  public static function display_cpt_by_page_type_and_number($page_id, $type, $number) {
-    $cpts_on_page = self::get_cpts_by_page_and_type($page_id, $type);
+  public static function display_by_type_page_and_number($type, $page_id,  $number) {
+    $cpts_on_page = self::get_by_type_and_page( $type, $page_id);
     if($cpts_on_page) {
       $number--;
       if ($cpts_on_page[$number]) {
-        self::display_cpt_by_cpt( get_post($cpts_on_page[$number]) , self::$types[$type]['cpt_type']);
+        self::display_by_cpt( get_post($cpts_on_page[$number]) , self::$types[$type]['cpt_type']);
       }
     } else {
       echo "<!-- No CPTs of type: {$type} Found on Page id: {$page_id}  -->";
     }
   }
 
-  public static function display_cpt_by_type_and_slug($type, $slug) {
+  public static function display_by_type_and_slug($type, $slug) {
     $type_meta = self::build_cpt_info($type);
-    $block = self::get_cpt_by_type_and_slug($type, $slug);    
-    self::display_cpt($block, $type, $slug, "cpt of type: {$type} and slug: {$slug} is not defined" );
+    $block = self::get_by_type_and_slug($type, $slug);    
+    self::display($block, $type, $slug, "cpt of type: {$type} and slug: {$slug} is not defined" );
   }
 
-  public static function display_cpt_by_cpt($cpt) {
-    self::log_obect([$cpt, self::get_type_by_post_type($cpt->post_type), $cpt->post_name]);
-    self::display_cpt($cpt, self::get_type_by_post_type($cpt->post_type), $cpt->post_name);
+  public static function display_by_cpt($cpt) {
+    //self::log_obect([$cpt, self::get_type_by_post_type($cpt->post_type), $cpt->post_name]);
+    self::display($cpt, self::get_type_by_post_type($cpt->post_type), $cpt->post_name);
   }
 
-  public static function display_cpt($block, $type, $slug=false, $error_text = "cpt was not found") {
+  public static function display($block, $type, $slug=false, $error_text = "cpt was not found") {
     $$type = $block;
     if($$type) {
       if( $slug && $tmpl_with_name = locate_template(sprintf(self::$block_and_name_template_path, $type, $slug)) ) {
@@ -82,13 +82,13 @@ abstract class Core  {
     }
   }
 
-  public static function get_cpts_by_page_and_type($page_id, $type) {
+  public static function get_by_type_and_page( $type, $page_id) {
     $block_ids = get_post_meta($page_id, self::$types[$type]['meta_key'], true);
 
     return $block_ids;
   }
 
-  public static function get_cpt_by_type_and_slug($type, $slug) {
+  public static function get_by_type_and_slug($type, $slug) {
     $type_meta = self::build_cpt_info($type);
     $block = get_posts(array(
       'post_type' => $type_meta['cpt_type'],
@@ -104,7 +104,7 @@ abstract class Core  {
     }
   }
 
-  public static function get_cpt_by_type_and_id($type, $evo_callout_post_id) {
+  public static function get_by_type_and_id($type, $evo_callout_post_id) {
     $callout = get_post($evo_callout_post_id);
     if($callout && $callout->post_type === $type) {
       return $callout;
@@ -113,7 +113,7 @@ abstract class Core  {
     }
   }
 
-  public static function get_all_cpt($type) {
+  public static function get_all($type) {
     $cpts = get_posts(array(
       'post_type' => self::$types[$type]['cpt_type'],
       'post_status' => 'publish',
@@ -158,9 +158,9 @@ abstract class Core  {
       $nonce_key = $info["nonce_key"];
       $cpt_type = $info["cpt_type"];
       $cpt_form_field = $info["cpt_form_field"] . "[]";
-      $current_ids = self::get_cpts_by_page_and_type($object->ID, $item);
+      $current_ids = self::get_by_type_and_page( $item, $object->ID);
       //$current_ids = get_post_meta($object->ID, $meta_key, true);
-      $all_items = self::get_all_cpt($item);
+      $all_items = self::get_all($item);
 
       wp_nonce_field(basename(__FILE__), $nonce_key); 
       echo "<div class='evo_cpt_list'>";
@@ -285,6 +285,10 @@ abstract class Core  {
     );
     register_post_type( $cpt_type, $args );
   }
+
+  // public static function __callStatic($func_name, $args) {
+  //   self::log_msg($func_name . implode(',', $args));
+  // }
 
   public static function log_msg($message) {
     error_log($message);
