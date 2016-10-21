@@ -27,6 +27,8 @@ add_action('after_setup_theme', function() use ($evo_custom_type_names) {
       require_once $filepath;
     }
 
+	$evo_custom_type_names = apply_filters('evo_block_config', $evo_custom_type_names);
+
     EvoCore::types_init($evo_custom_type_names);
 
 } , 100);
