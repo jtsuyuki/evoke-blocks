@@ -16,8 +16,7 @@ $evo_custom_type_names = ['callout', 'block'];
 
 add_action('after_setup_theme', function() use ($evo_custom_type_names) {
     $evoincludes = [
-      'lib/core.php',
-      'lib/callouts.php'
+      'lib/core.php'
     ];
 
     foreach ($evoincludes as $file) {
